@@ -6,7 +6,7 @@ CCFLAGS := -I$(ROOT)/include/ \
 	-I$(ROOT)/raylib/include/ \
 	-Wall \
 	-c
-LD := clang 
+LD := clang++
 LDFLAGS := -shared
 SOURCES := $(shell find $(ROOT)/core/ -type f -name '*.cpp')
 
