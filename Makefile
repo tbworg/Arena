@@ -3,6 +3,7 @@ OBJOUT := $(ROOT)/build/arena.o
 LIBOUT := $(ROOT)/arena.so
 CC := clang++
 CCFLAGS := -I$(ROOT)/include/ \
+	-I$(ROOT)/raylib/include/ \
 	-Wall \
 	-c
 LD := clang 
@@ -19,3 +20,7 @@ $(OBJOUT): $(SOURCES)
 
 $(LIBOUT): $(OBJOUT)
 	$(LD) $(LDFLAGS) $(OBJOUT) -o $(LIBOUT)
+
+clean:
+	@rm $(OBJOUT)
+	@rm $(LIBOUT)
