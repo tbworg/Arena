@@ -1,26 +1,31 @@
 ROOT := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-OBJOUT := $(ROOT)/build/arena.o
+OBJDIR := $(ROOT)/build
 LIBOUT := $(ROOT)/arena.so
 CC := clang++
 CCFLAGS := -I$(ROOT)/include/ \
-	-I$(ROOT)/raylib/include/ \
-	-Wall \
-	-c
+    -I$(ROOT)/raylib/include/ \
+    -Wall \
+    -c
 LD := clang++
 LDFLAGS := -shared
 SOURCES := $(shell find $(ROOT)/core/ -type f -name '*.cpp')
+OBJECTS := $(patsubst $(ROOT)/core/%.cpp,$(OBJDIR)/%.o,$(SOURCES))
 
 all: build link
 
-build: $(OBJOUT)
+build: $(OBJECTS)
+
 link: $(LIBOUT)
 
-$(OBJOUT): $(SOURCES)
-	$(CC) $(CCFLAGS) $(SOURCES) -o $(OBJOUT)
+$(OBJDIR)/%.o: $(ROOT)/core/%.cpp | $(OBJDIR)
+	$(CC) $(CCFLAGS) $< -o $@
 
-$(LIBOUT): $(OBJOUT)
-	$(LD) $(LDFLAGS) $(OBJOUT) -o $(LIBOUT)
+$(LIBOUT): $(OBJECTS)
+	$(LD) $(LDFLAGS) $^ -o $@
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
 
 clean:
-	@rm $(OBJOUT)
-	@rm $(LIBOUT)
+	@rm -rf $(OBJDIR)
+	@rm -f $(LIBOUT)
