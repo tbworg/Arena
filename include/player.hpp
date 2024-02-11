@@ -11,6 +11,7 @@ typedef struct Player {
     Vector2 position;
     Vector2 size;
     float speed;
+    float jumpspeed;
     bool canJump;
 } Player;
 
